@@ -9,12 +9,12 @@ public class AddressBookMain {
     private int Zip;
     private String City;
     private String State;
-    private int PhoneNumber;
+    private long PhoneNumber;
     private String Email;
     private HashMap contact;
 
     public AddressBookMain(String FirstName, String LastName, String Address, String City, int Zip,
-                           String State, int PhoneNumber, String Email) {
+                           String State, long PhoneNumber, String Email) {
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.Address = Address;
@@ -23,26 +23,9 @@ public class AddressBookMain {
         this.State = State;
         this.PhoneNumber = PhoneNumber;
         this.Email = Email;
-
     }
 
     public AddressBookMain() {
-    }
-
-    public HashMap storeContact(HashMap contact) {
-        ArrayList<String> entry = new ArrayList<String>();
-        entry.add(FirstName);
-        entry.add(LastName);
-        entry.add(Address);
-        entry.add(String.valueOf(Zip));
-        entry.add(City);
-        entry.add(State);
-        entry.add(String.valueOf(PhoneNumber));
-        entry.add(Email);
-        contact.put(FirstName, entry);
-        System.out.println(entry);
-        System.out.println(contact);
-        return contact;
     }
 
     private static void getContact(AddressBookMain details) {
@@ -62,18 +45,88 @@ public class AddressBookMain {
         details.State = obj.next();
         obj.nextLine();
         System.out.println("Enter you phone number");
-        details.PhoneNumber = obj.nextInt();
+        details.PhoneNumber = obj.nextLong();
         obj.nextLine();
         System.out.println("Enter you email name");
         details.Email = obj.nextLine();
     }
 
-    private void editContact(HashMap contact) {
+    public static void editContact(HashMap contact) {
         System.out.println(contact);
         Scanner obj = new Scanner(System.in);
         System.out.println("enter your name");
         String name = obj.next();
-        System.out.println(contact.get(name));
+        ArrayList option = (ArrayList) (contact.get(name));
+        boolean conditon = true;
+        while (conditon) {
+            System.out.println("enter number to edit 0-firstname 1-lastname 2-address 3-zip 4-city 5-state 6-phonenumber 7-email" +
+                    " 9 to quit");
+            int check = obj.nextInt();
+            switch (check) {
+                case 0:
+                    System.out.println("Enter you first name");
+                    option.set(0, obj.next());
+
+                    break;
+                case 1:
+                    System.out.println("Enter you last name");
+                    option.set(1, obj.next());
+                    obj.nextLine();
+                    break;
+                case 2:
+                    System.out.println("Enter you Address name");
+                    option.set(2, obj.nextLine());
+                    break;
+                case 3:
+                    System.out.println("Enter you zip ");
+                    option.set(3, obj.nextInt());
+                    break;
+                case 4:
+                    System.out.println("Enter you city name");
+                    option.set(4, obj.next());
+                    break;
+                case 5:
+                    System.out.println("Enter you state name");
+                    option.set(5, obj.next());
+                    obj.nextLine();
+                    break;
+                case 6:
+                    System.out.println("Enter you phone number");
+                    option.set(6, obj.nextLong());
+                    obj.nextLine();
+                    break;
+                case 7:
+                    System.out.println("Enter you email name");
+                    option.set(7, obj.next());
+                    break;
+                case 9:
+                    conditon = false;
+                    break;
+                default:
+                    System.out.println("invalid input");
+            }
+            if (name != (contact.get(name))) {
+                Object newname = option.get(0);
+                contact.remove(name);
+                contact.put(newname, option);
+            }
+        }
+    }
+
+    public HashMap storeContact(HashMap contact) {
+        ArrayList<String> entry = new ArrayList<String>();
+        entry.add(FirstName);
+        entry.add(LastName);
+        entry.add(Address);
+        entry.add(String.valueOf(Zip));
+        entry.add(City);
+        entry.add(State);
+        entry.add(String.valueOf(PhoneNumber));
+        entry.add(Email);
+        contact.put(FirstName, entry);
+        System.out.println(entry);
+        System.out.println(contact);
+        return contact;
     }
 
     @Override
@@ -81,12 +134,45 @@ public class AddressBookMain {
         return FirstName;
     }
 
+    public static boolean makechoice(AddressBookMain contact1, HashMap contact) {
+        Scanner obj = new Scanner(System.in);
+        System.out.println("enter 1 to add contact 2 to edit or 0 to quit");
+        int check = obj.nextInt();
+        boolean conditon = true;
+        switch (check) {
+            case 1:
+                getContact(contact1);
+                HashMap<String, ArrayList<String>> data = contact1.storeContact(contact);
+                contact = data;
+                break;
+            case 2:
+                displayStore(contact);
+                break;
+            case 3:
+                editContact(contact);
+                break;
+            case 0:
+                conditon = false;
+                break;
+            default:
+                System.out.println("invalid input");
+        }
+        return conditon;
+    }
+
+    public static void displayStore(HashMap contact) {
+        System.out.println(contact);
+    }
+
     public static void main(String[] args) {
         AddressBookMain contact1 = new AddressBookMain();
         HashMap<String, ArrayList<String>> contact = new HashMap<String, ArrayList<String>>();
-        getContact(contact1);
-        HashMap<String, ArrayList<String>> data = contact1.storeContact(contact);
-        contact = data;
         System.out.println(contact);
+        boolean conditon = true;
+        while (conditon) {
+            boolean condition = makechoice(contact1, contact);
+            if (condition == false)
+                break;
+        }
     }
 }
