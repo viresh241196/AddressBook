@@ -65,7 +65,6 @@ public class AddressBookMain {
                 case 0:
                     System.out.println("Enter you first name");
                     option.set(0, obj.next());
-
                     break;
                 case 1:
                     System.out.println("Enter you last name");
