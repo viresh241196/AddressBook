@@ -52,7 +52,6 @@ public class AddressBookMain {
     }
 
     public static void editContact(HashMap contact) {
-        System.out.println(contact);
         Scanner obj = new Scanner(System.in);
         System.out.println("enter your name");
         String name = obj.next();
@@ -136,7 +135,7 @@ public class AddressBookMain {
 
     public static boolean makechoice(AddressBookMain contact1, HashMap contact) {
         Scanner obj = new Scanner(System.in);
-        System.out.println("enter 1 to add contact 2 to edit or 0 to quit");
+        System.out.println("enter 1 - add contact 2 -display contact 3 - edit 4 - delete entry or 0 to quit");
         int check = obj.nextInt();
         boolean conditon = true;
         switch (check) {
@@ -151,6 +150,9 @@ public class AddressBookMain {
             case 3:
                 editContact(contact);
                 break;
+            case 4:
+                deleteEntry(contact);
+                break;
             case 0:
                 conditon = false;
                 break;
@@ -164,10 +166,15 @@ public class AddressBookMain {
         System.out.println(contact);
     }
 
+    public static void deleteEntry(HashMap contact){
+        Scanner obj = new Scanner(System.in);
+        System.out.println("enter your name to delete from contact");
+        String name = obj.next();
+        contact.remove(name);
+    }
     public static void main(String[] args) {
         AddressBookMain contact1 = new AddressBookMain();
         HashMap<String, ArrayList<String>> contact = new HashMap<String, ArrayList<String>>();
-        System.out.println(contact);
         boolean conditon = true;
         while (conditon) {
             boolean condition = makechoice(contact1, contact);
