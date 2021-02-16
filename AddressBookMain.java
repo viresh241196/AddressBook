@@ -1,61 +1,54 @@
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.ArrayList;
-
-public class AddressBookMain {
-    private String FirstName;
-    private String LastName;
-    private String Address;
-    private int Zip;
-    private String City;
-    private String State;
-    private long PhoneNumber;
-    private String Email;
-    private HashMap contact;
-
-    public AddressBookMain(String FirstName, String LastName, String Address, String City, int Zip,
-                           String State, long PhoneNumber, String Email) {
-        this.FirstName = FirstName;
-        this.LastName = LastName;
-        this.Address = Address;
-        this.Zip = Zip;
-        this.City = City;
-        this.State = State;
-        this.PhoneNumber = PhoneNumber;
-        this.Email = Email;
+import java.util.*;
+public class AddressBookMain implements MultipleAddressBook {
+    public Map<String,AddressBook> contact;
+    public Map<String,AddressBook> book;
+    // Constructor
+    public AddressBookMain(){
+        contact= new HashMap<>();
+        book= new HashMap<>();
+    }
+    @Override
+    public void addAddressBook(String BookName,String FirstName, String LastName, String Address, String City, int Zip,String State, long PhoneNumber, String Email){
+        AddressBook adder=new AddressBook(BookName,FirstName,LastName,Address,City,Zip,State,PhoneNumber,Email);
+        contact.put(FirstName,adder);
+        book.put(BookName,adder);
     }
 
-    public AddressBookMain() {
-    }
-
-    private static void getContact(AddressBookMain details) {
+    //This method takes console arguments
+    @Override
+    public void getContact() {
         Scanner obj = new Scanner(System.in);
+        System.out.println("Enter Address Book Name");
+        String BookName = obj.next();
         System.out.println("Enter you first name");
-        details.FirstName = obj.next();
+        String FirstName = obj.next();
         System.out.println("Enter you last name");
-        details.LastName = obj.next();
+        String LastName = obj.next();
         obj.nextLine();
         System.out.println("Enter you Address name");
-        details.Address = obj.nextLine();
+        String Address = obj.nextLine();
         System.out.println("Enter you zip ");
-        details.Zip = obj.nextInt();
+        int Zip = obj.nextInt();
         System.out.println("Enter you city name");
-        details.City = obj.next();
+        String City = obj.next();
         System.out.println("Enter you state name");
-        details.State = obj.next();
+        String State = obj.next();
         obj.nextLine();
         System.out.println("Enter you phone number");
-        details.PhoneNumber = obj.nextLong();
+        long PhoneNumber = obj.nextLong();
         obj.nextLine();
         System.out.println("Enter you email name");
-        details.Email = obj.nextLine();
+        String Email = obj.nextLine();
+        addAddressBook(BookName,FirstName,LastName,Address,City,Zip,State,PhoneNumber,Email);
     }
 
-    public static void editContact(HashMap contact) {
+    // This method helps to edit the details
+    @Override
+    public void editContact() {
         Scanner obj = new Scanner(System.in);
         System.out.println("enter your name");
         String name = obj.next();
-        ArrayList option = (ArrayList) (contact.get(name));
+        AddressBook option =  contact.get(name);
         boolean conditon = true;
         while (conditon) {
             System.out.println("enter number to edit 0-firstname 1-lastname 2-address 3-zip 4-city 5-state 6-phonenumber 7-email" +
@@ -64,38 +57,38 @@ public class AddressBookMain {
             switch (check) {
                 case 0:
                     System.out.println("Enter you first name");
-                    option.set(0, obj.next());
+                    option.FirstName=obj.next();
                     break;
                 case 1:
                     System.out.println("Enter you last name");
-                    option.set(1, obj.next());
+                    option.LastName=obj.next();
                     obj.nextLine();
                     break;
                 case 2:
                     System.out.println("Enter you Address name");
-                    option.set(2, obj.nextLine());
+                    option.Address=obj.nextLine();
                     break;
                 case 3:
                     System.out.println("Enter you zip ");
-                    option.set(3, obj.nextInt());
+                    option.Zip=obj.nextInt();
                     break;
                 case 4:
                     System.out.println("Enter you city name");
-                    option.set(4, obj.next());
+                    option.City=obj.next();
                     break;
                 case 5:
                     System.out.println("Enter you state name");
-                    option.set(5, obj.next());
+                    option.State=obj.next();
                     obj.nextLine();
                     break;
                 case 6:
                     System.out.println("Enter you phone number");
-                    option.set(6, obj.nextLong());
+                    option.PhoneNumber=obj.nextLong();
                     obj.nextLine();
                     break;
                 case 7:
                     System.out.println("Enter you email name");
-                    option.set(7, obj.next());
+                    option.Email=obj.next();
                     break;
                 case 9:
                     conditon = false;
@@ -103,54 +96,39 @@ public class AddressBookMain {
                 default:
                     System.out.println("invalid input");
             }
-            if (name != (contact.get(name))) {
-                Object newname = option.get(0);
-                contact.remove(name);
-                contact.put(newname, option);
-            }
         }
     }
 
-    public HashMap storeContact(HashMap contact) {
-        ArrayList<String> entry = new ArrayList<String>();
-        entry.add(FirstName);
-        entry.add(LastName);
-        entry.add(Address);
-        entry.add(String.valueOf(Zip));
-        entry.add(City);
-        entry.add(State);
-        entry.add(String.valueOf(PhoneNumber));
-        entry.add(Email);
-        contact.put(FirstName, entry);
-        System.out.println(entry);
-        System.out.println(contact);
-        return contact;
-    }
-
+    // This method helps to delete the contact details
     @Override
-    public String toString() {
-        return FirstName;
+    public void deleteEntry(){
+        Scanner obj = new Scanner(System.in);
+        System.out.println("enter your name to delete from contact");
+        String name = obj.next();
+        contact.remove(name);
     }
 
-    public static boolean makechoice(AddressBookMain contact1, HashMap contact) {
+    // This method helps user to choose action
+    public boolean makechoice() {
         Scanner obj = new Scanner(System.in);
-        System.out.println("enter 1 - add contact 2 -display contact 3 - edit 4 - delete entry or 0 to quit");
+        System.out.println("enter 1 - add contact 2 -display contact 3-display address book 4 - edit 5 - delete entry or 0 to quit");
         int check = obj.nextInt();
         boolean conditon = true;
         switch (check) {
             case 1:
-                getContact(contact1);
-                HashMap<String, ArrayList<String>> data = contact1.storeContact(contact);
-                contact = data;
+                getContact();
                 break;
             case 2:
-                displayStore(contact);
+                getContactByName();
                 break;
             case 3:
-                editContact(contact);
+                getAddressBookByName();
                 break;
             case 4:
-                deleteEntry(contact);
+                editContact();
+                break;
+            case 5:
+                deleteEntry();
                 break;
             case 0:
                 conditon = false;
@@ -161,22 +139,30 @@ public class AddressBookMain {
         return conditon;
     }
 
-    public static void displayStore(HashMap contact) {
-        System.out.println(contact);
+    // This method helps to find contact details by first name
+    public void getContactByName() {
+        Scanner obj = new Scanner(System.in);
+        System.out.println("Enter Name to search");
+        String firstName=obj.nextLine();
+        AddressBook op=contact.get(firstName);
+        System.out.println(op);
     }
 
-    public static void deleteEntry(HashMap contact){
+    // This method helps to find address book details by book name
+    public void getAddressBookByName(){
         Scanner obj = new Scanner(System.in);
-        System.out.println("enter your name to delete from contact");
-        String name = obj.next();
-        contact.remove(name);
+        System.out.println("Enter Address Book Name to search");
+        String bookName=obj.nextLine();
+        AddressBook op=book.get(bookName);
+        System.out.println(op.toString());
     }
-    public static void main(String[] args) {
-        AddressBookMain contact1 = new AddressBookMain();
-        HashMap<String, ArrayList<String>> contact = new HashMap<String, ArrayList<String>>();
-        boolean conditon = true;
+
+    public static void main(String[] args){
+        MultipleAddressBook bookBuilder=new AddressBookMain();
+        bookBuilder.makechoice();
+        boolean conditon=true;
         while (conditon) {
-            boolean condition = makechoice(contact1, contact);
+            boolean condition = bookBuilder.makechoice();
             if (condition == false)
                 break;
         }
