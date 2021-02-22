@@ -25,7 +25,6 @@ public class AddressBookMain implements MultipleAddressBook {
         String BookName = obj.next();
         System.out.println("Enter you first name");
         String FirstName = obj.next();
-
         System.out.println("Enter you last name");
         String LastName = obj.next();
         obj.nextLine();
@@ -43,7 +42,6 @@ public class AddressBookMain implements MultipleAddressBook {
         obj.nextLine();
         System.out.println("Enter you email name");
         String Email = obj.nextLine();
-        AddressBook details = contact.get(FirstName);
         if (equals(FirstName))
             addAddressBook(BookName, FirstName, LastName, Address, City, Zip, State, PhoneNumber, Email);
         else
