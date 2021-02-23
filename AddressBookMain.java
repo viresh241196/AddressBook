@@ -6,6 +6,7 @@ public class AddressBookMain implements MultipleAddressBook {
     public Map<String, ArrayList<AddressBook>> city;
     public Map<String, ArrayList<AddressBook>> state;
     public ArrayList<AddressBook> entries;
+    public int count = 0;
     Scanner obj = new Scanner(System.in);
 
     // Constructor
@@ -26,6 +27,7 @@ public class AddressBookMain implements MultipleAddressBook {
         multibook.put(BookName, entries);
         city.put(City, entries);
         state.put(State, entries);
+        count++;
     }
 
     //This method takes console arguments
@@ -152,7 +154,7 @@ public class AddressBookMain implements MultipleAddressBook {
     // This method helps user to choose action
     public boolean makechoice() {
         System.out.println("enter 1:add_contact 2:view_by_city 3-view_by_state 4:edit_contact 5:delete_contact" +
-                " 6:person_by_city_or_state or 0 to quit");
+                " 6:person_by_city_or_state 7:get_count_of_person or 0 to quit");
         int check = obj.nextInt();
         boolean conditon = true;
         switch (check) {
@@ -174,6 +176,9 @@ public class AddressBookMain implements MultipleAddressBook {
             case 6:
                 getContactByCityOrState();
                 break;
+            case 7:
+                getCountOfPersons();
+                break;
             case 0:
                 conditon = false;
                 break;
@@ -181,6 +186,10 @@ public class AddressBookMain implements MultipleAddressBook {
                 System.out.println("invalid input");
         }
         return conditon;
+    }
+
+    private void getCountOfPersons() {
+        System.out.println("total count is "+ count);
     }
 
     public void viewPersonByCity() {
@@ -194,6 +203,7 @@ public class AddressBookMain implements MultipleAddressBook {
         }
         if (flag == 1) System.out.println("no records found");
     }
+
     public void viewPersonByState() {
         System.out.println("Enter state");
         String location = obj.next();
