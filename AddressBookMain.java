@@ -19,14 +19,14 @@ public class AddressBookMain implements MultipleAddressBook {
     }
 
     @Override
-    public void addAddressBook(String BookName, String FirstName, String LastName, String Address, String City, int Zip,
-                               String State, long PhoneNumber, String Email) {
-        AddressBook adder = new AddressBook(BookName, FirstName, LastName, Address, City, Zip, State, PhoneNumber, Email);
+    public void addAddressBook(String bookName, String firstName, String lastName, String address, String city, int zip,
+                               String state, long phoneNumber, String email) {
+        AddressBook adder = new AddressBook(bookName, firstName, lastName, address, city, zip, state, phoneNumber, email);
         entries.add(adder);
-        book.put(FirstName, adder);
-        multibook.put(BookName, entries);
-        city.put(City, entries);
-        state.put(State, entries);
+        book.put(firstName, adder);
+        multibook.put(bookName, entries);
+        this.city.put(city, entries);
+        this.state.put(state, entries);
         count++;
     }
 
