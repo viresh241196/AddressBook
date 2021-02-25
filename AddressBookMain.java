@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class AddressBookMain implements MultipleAddressBook {
     public Map<String, ArrayList<AddressBook>> book;
@@ -196,40 +197,36 @@ public class AddressBookMain implements MultipleAddressBook {
         System.out.println("Enter city");
         String location = obj.next();
         obj.nextLine();
-        int flag = 1;
-        for (String entry : city.keySet()) {
-            if (entry.equals(location)) System.out.println(entry);
-            flag = 0;
-        }
-        if (flag == 1) System.out.println("no records found");
+        List exit= city.get(location);
+            if (exit!=null)
+                System.out.println(city.get(location));
+            else
+                System.out.println("no records found");
     }
 
     public void viewPersonByState() {
         System.out.println("Enter state");
         String location = obj.next();
         obj.nextLine();
-        int flag = 1;
-        for (String entry : state.keySet()) {
-            if (entry.equals(location)) System.out.println(entry);
-            flag = 0;
-        }
-        if (flag == 1) System.out.println("no records found");
+        List exit= state.get(location);
+        if (exit!=null)
+            System.out.println(state.get(location));
+        else
+            System.out.println("no records found");
     }
 
     public void getContactByCityOrState() {
         System.out.println("Enter city or state");
         String location = obj.next();
         obj.nextLine();
-        int flag = 1;
-        for (String entry : multibook.keySet()) {
-            for (AddressBook item : multibook.get(entry)) {
-                if (item.State.equals(location) || item.City.equals(location)) {
-                    System.out.println(item);
-                    flag = 0;
-                }
-            }
-        }
-        if (flag == 1) System.out.println("no records found");
+        List check1= state.get(location);
+        List check2= city.get(location);
+        if (check1!=null)
+            System.out.println(state.get(location));
+        else if (check2!=null)
+            System.out.println(city.get(location));
+        else
+            System.out.println("no records found");
     }
 
     public static void main(String[] args) {
