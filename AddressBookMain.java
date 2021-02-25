@@ -190,26 +190,26 @@ public class AddressBookMain implements MultipleAddressBook {
     }
 
     private void getCountOfPersons() {
-        System.out.println("total count is "+ count);
+        System.out.println("total count is " + count);
     }
 
     public void viewPersonByCity() {
         System.out.println("Enter city");
         String location = obj.next();
         obj.nextLine();
-        List exit= city.get(location);
-            if (exit!=null)
-                System.out.println(city.get(location));
-            else
-                System.out.println("no records found");
+        List check = city.get(location);
+        if (check != null)
+            System.out.println(city.get(location));
+        else
+            System.out.println("no records found");
     }
 
     public void viewPersonByState() {
         System.out.println("Enter state");
         String location = obj.next();
         obj.nextLine();
-        List exit= state.get(location);
-        if (exit!=null)
+        List check = state.get(location);
+        if (check != null)
             System.out.println(state.get(location));
         else
             System.out.println("no records found");
@@ -219,11 +219,11 @@ public class AddressBookMain implements MultipleAddressBook {
         System.out.println("Enter city or state");
         String location = obj.next();
         obj.nextLine();
-        List check1= state.get(location);
-        List check2= city.get(location);
-        if (check1!=null)
+        List check1 = state.get(location);
+        List check2 = city.get(location);
+        if (check1 != null)
             System.out.println(state.get(location));
-        else if (check2!=null)
+        else if (check2 != null)
             System.out.println(city.get(location));
         else
             System.out.println("no records found");
