@@ -1,11 +1,12 @@
 import java.util.*;
 
 public class AddressBookMain implements MultipleAddressBook {
-    public Map<String, ArrayList<AddressBook>> book;
+    public Map<String, AddressBook> book;
     public Map<String, ArrayList<AddressBook>> multibook;
     public Map<String, ArrayList<AddressBook>> city;
     public Map<String, ArrayList<AddressBook>> state;
     public ArrayList<AddressBook> entries;
+    public int count = 0;
     Scanner obj = new Scanner(System.in);
 
     // Constructor
@@ -18,49 +19,50 @@ public class AddressBookMain implements MultipleAddressBook {
     }
 
     @Override
-    public void addAddressBook(String BookName, String FirstName, String LastName, String Address, String City, int Zip,
-                               String State, long PhoneNumber, String Email) {
-        AddressBook adder = new AddressBook(BookName, FirstName, LastName, Address, City, Zip, State, PhoneNumber, Email);
+    public void addAddressBook(String bookName, String firstName, String lastName, String address, String city, int zip,
+                               String state, long phoneNumber, String email) {
+        AddressBook adder = new AddressBook(bookName, firstName, lastName, address, city, zip, state, phoneNumber, email);
         entries.add(adder);
-        book.put(FirstName, entries);
-        multibook.put(BookName, entries);
-        city.put(City, entries);
-        state.put(State, entries);
+        book.put(firstName, adder);
+        multibook.put(bookName, entries);
+        this.city.put(city, entries);
+        this.state.put(state, entries);
+        count++;
     }
 
     //This method takes console arguments
     @Override
     public void getContact() {
         System.out.println("Enter Address Book Name");
-        String BookName = obj.next();
+        String bookName = obj.next();
         System.out.println("Enter you first name");
-        String FirstName = obj.next();
+        String firstName = obj.next();
         System.out.println("Enter you last name");
-        String LastName = obj.next();
+        String lastName = obj.next();
         obj.nextLine();
         System.out.println("Enter you Address name");
-        String Address = obj.nextLine();
+        String address = obj.nextLine();
         System.out.println("Enter you zip ");
-        int Zip = obj.nextInt();
+        int zip = obj.nextInt();
         System.out.println("Enter you city name");
-        String City = obj.next();
+        String city = obj.next();
         System.out.println("Enter you state name");
-        String State = obj.next();
+        String state = obj.next();
         obj.nextLine();
         System.out.println("Enter you phone number");
-        long PhoneNumber = obj.nextLong();
+        long phoneNumber = obj.nextLong();
         obj.nextLine();
         System.out.println("Enter you email name");
-        String Email = obj.nextLine();
-        if (equals(FirstName))
-            addAddressBook(BookName, FirstName, LastName, Address, City, Zip, State, PhoneNumber, Email);
+        String email = obj.nextLine();
+        if (equals(firstName))
+            addAddressBook(bookName, firstName, lastName, address, city, zip, state, phoneNumber, email);
         else
             System.out.println("the Name already exist in contact please use different name");
     }
 
     @Override
     public boolean equals(String firstName) {
-        List<AddressBook> details = book.get(firstName);
+        AddressBook details = book.get(firstName);
         if (details == null) return true;
         return false;
     }
