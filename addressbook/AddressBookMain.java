@@ -1,5 +1,6 @@
+package addressbook;
+
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class AddressBookMain implements MultipleAddressBook {
     public Map<String, AddressBook> book;
@@ -159,7 +160,7 @@ public class AddressBookMain implements MultipleAddressBook {
     // This method helps user to choose action
     public boolean makeChoice() {
         System.out.println("enter 1:add_contact 2:view_by_city 3-view_by_state 4:edit_contact 5:delete_contact" +
-                " 6:person_by_city_or_state 7:get_count_of_person 8:sort_alphabetically 9:sort_viaCityStateZip or 0 to quit");
+                " 6:person_by_city_or_state 7:get_count_of_person 8:sort_alphabetically 9:sort_viaCityStateZip 10: print to file or 0 to quit");
         int check = obj.nextInt();
         boolean conditon = true;
         switch (check) {
@@ -190,6 +191,12 @@ public class AddressBookMain implements MultipleAddressBook {
             case 9:
                 sortCityStateOrZip();
                 break;
+            case 10:
+                readAddressBook();
+                break;
+            case 11:
+                writeAddressBook();
+                break;
             case 0:
                 conditon = false;
                 break;
@@ -207,36 +214,30 @@ public class AddressBookMain implements MultipleAddressBook {
         System.out.println("Enter city");
         String location = obj.next();
         obj.nextLine();
-        List exit = city.get(location);
-        if (exit != null)
-            System.out.println(city.get(location));
-        else
-            System.out.println("no records found");
+        for(AddressBook city : entries){
+            if(city.getCity().equals(location))
+                System.out.println(city);
+        }
     }
 
     public void viewPersonByState() {
         System.out.println("Enter state");
         String location = obj.next();
         obj.nextLine();
-        List exit = state.get(location);
-        if (exit != null)
-            System.out.println(state.get(location));
-        else
-            System.out.println("no records found");
+        for(AddressBook state : entries){
+            if(state.getState().equals(location))
+                System.out.println(state);
+        }
     }
 
     public void getContactByCityOrState() {
         System.out.println("Enter city or state");
         String location = obj.next();
         obj.nextLine();
-        List check1 = state.get(location);
-        List check2 = city.get(location);
-        if (check1 != null)
-            System.out.println(state.get(location));
-        else if (check2 != null)
-            System.out.println(city.get(location));
-        else
-            System.out.println("no records found");
+        for(AddressBook result : entries){
+            if(result.getState().equals(location)||result.getCity().equals(location))
+                System.out.println(result);
+        }
     }
 
     public void sortAlphabetically() {
@@ -257,6 +258,18 @@ public class AddressBookMain implements MultipleAddressBook {
                 zip.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(System.out::println);
                 break;
         }
+    }
+
+    public void toPrint(HashMap<String,AddressBook> contactsBook) {
+        contactsBook.forEach((String,Contacts)-> System.out.println(String + " " + Contacts) );
+    }
+
+    public void writeAddressBook() {
+        new AddressBookFileIOService().write(entries);
+    }
+
+    public void readAddressBook() {
+        entries = (ArrayList<AddressBook>) new AddressBookFileIOService().readData();
     }
 
     public static void main(String[] args) {
