@@ -222,6 +222,12 @@ public class AddressBookMain implements MultipleAddressBook {
                     e.printStackTrace();
                 }
                 break;
+            case 14:
+                new Json().writeJson(entries);
+                break;
+            case 15:
+                new Json().readJson();
+                break;
             case 0:
                 conditon = false;
                 break;
