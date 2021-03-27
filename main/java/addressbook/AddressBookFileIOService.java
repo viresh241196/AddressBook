@@ -12,13 +12,13 @@ public class AddressBookFileIOService {
 
     public void write(List<AddressBook> contactsList) {
         StringBuffer contactBuffer = new StringBuffer();
-        contactsList.forEach(person ->{
+        contactsList.forEach(person -> {
             String contactDataString = person.toString().concat("\n");
             contactBuffer.append(contactDataString);
         });
         try {
-            Files.write(Paths.get(ADDRESSBOOK_FILE_NAME),contactBuffer.toString().getBytes());
-        }catch (IOException x){
+            Files.write(Paths.get(ADDRESSBOOK_FILE_NAME), contactBuffer.toString().getBytes());
+        } catch (IOException x) {
             x.printStackTrace();
         }
     }
@@ -27,7 +27,7 @@ public class AddressBookFileIOService {
         try {
             Files.lines(new File(ADDRESSBOOK_FILE_NAME).toPath())
                     .forEach(System.out::println);
-        }catch (IOException x){
+        } catch (IOException x) {
             x.printStackTrace();
         }
     }

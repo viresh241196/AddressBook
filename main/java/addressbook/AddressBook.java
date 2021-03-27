@@ -1,32 +1,27 @@
 package addressbook;
 
-interface MultipleAddressBook {
+import com.opencsv.bean.CsvBindByName;
 
-    public void addAddressBook(String bookName, String firstName, String lastName, String address, String city, int zip,
-                               String state, long phoneNumber, String email);
-
-    public void getContact();
-
-    boolean equals(String firstName);
-
-    public void editContact();
-
-    public void deleteEntry();
-
-    public boolean makeChoice();
-
-}
-
-class AddressBook {
+public class AddressBook {
+    @CsvBindByName(column = "bookName", required = true)
     public String bookName;
+    @CsvBindByName(column = "firstName", required = true)
     public String firstName;
+    @CsvBindByName(column = "lastName", required = true)
     public String lastName;
+    @CsvBindByName(column = "address")
     public String address;
+    @CsvBindByName(column = "city")
     public String city;
+    @CsvBindByName(column = "zip")
     public int zip;
+    @CsvBindByName(column = "state")
     public String state;
+    @CsvBindByName(column = "phone")
     public long phoneNumber;
+    @CsvBindByName(column = "email")
     public String email;
+
 
     public String getBookName() {
         return bookName;
@@ -115,7 +110,7 @@ class AddressBook {
 
     @Override
     public String toString() {
-        return "BookName: "+bookName + " firstName:" + firstName + " lastName:" + lastName + " address:" + address + " city:" + city
-                + " zip:" + zip + " state:" + state + " phoneNumber:" + phoneNumber + " email:" + email+"\n";
+        return "BookName: " + bookName + " firstName:" + firstName + " lastName:" + lastName + " address:" + address + " city:" + city
+                + " zip:" + zip + " state:" + state + " phoneNumber:" + phoneNumber + " email:" + email + "\n";
     }
 }

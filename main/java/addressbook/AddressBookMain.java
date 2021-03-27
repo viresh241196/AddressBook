@@ -1,6 +1,13 @@
 package addressbook;
 
-import java.util.*;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class AddressBookMain implements MultipleAddressBook {
     public Map<String, AddressBook> book;
@@ -21,7 +28,6 @@ public class AddressBookMain implements MultipleAddressBook {
         zip = new HashMap<>();
         entries = new ArrayList<>();
     }
-
 
     @Override
     public void addAddressBook(String bookName, String firstName, String lastName, String address, String city, int zip,
@@ -160,7 +166,8 @@ public class AddressBookMain implements MultipleAddressBook {
     // This method helps user to choose action
     public boolean makeChoice() {
         System.out.println("enter 1:add_contact 2:view_by_city 3-view_by_state 4:edit_contact 5:delete_contact" +
-                " 6:person_by_city_or_state 7:get_count_of_person 8:sort_alphabetically 9:sort_viaCityStateZip 10: print to file or 0 to quit");
+                " 6:person_by_city_or_state 7:get_count_of_person 8:sort_alphabetically 9:sort_viaCityStateZip " +
+                "10: print to fileIO 11:write to FileIO 12:writeCSV file 13:readCSV file or 0 to quit ");
         int check = obj.nextInt();
         boolean conditon = true;
         switch (check) {
@@ -197,6 +204,24 @@ public class AddressBookMain implements MultipleAddressBook {
             case 11:
                 writeAddressBook();
                 break;
+            case 12:
+                try {
+                    new OpenCSV().writeCSV(entries);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (CsvDataTypeMismatchException e) {
+                    e.printStackTrace();
+                } catch (CsvRequiredFieldEmptyException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case 13:
+                try {
+                    new OpenCSV().readCSV();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
             case 0:
                 conditon = false;
                 break;
@@ -214,8 +239,8 @@ public class AddressBookMain implements MultipleAddressBook {
         System.out.println("Enter city");
         String location = obj.next();
         obj.nextLine();
-        for(AddressBook city : entries){
-            if(city.getCity().equals(location))
+        for (AddressBook city : entries) {
+            if (city.getCity().equals(location))
                 System.out.println(city);
         }
     }
@@ -224,8 +249,8 @@ public class AddressBookMain implements MultipleAddressBook {
         System.out.println("Enter state");
         String location = obj.next();
         obj.nextLine();
-        for(AddressBook state : entries){
-            if(state.getState().equals(location))
+        for (AddressBook state : entries) {
+            if (state.getState().equals(location))
                 System.out.println(state);
         }
     }
@@ -234,8 +259,8 @@ public class AddressBookMain implements MultipleAddressBook {
         System.out.println("Enter city or state");
         String location = obj.next();
         obj.nextLine();
-        for(AddressBook result : entries){
-            if(result.getState().equals(location)||result.getCity().equals(location))
+        for (AddressBook result : entries) {
+            if (result.getState().equals(location) || result.getCity().equals(location))
                 System.out.println(result);
         }
     }
@@ -260,8 +285,8 @@ public class AddressBookMain implements MultipleAddressBook {
         }
     }
 
-    public void toPrint(HashMap<String,AddressBook> contactsBook) {
-        contactsBook.forEach((String,Contacts)-> System.out.println(String + " " + Contacts) );
+    public void toPrint(HashMap<String, AddressBook> contactsBook) {
+        contactsBook.forEach((String, Contacts) -> System.out.println(String + " " + Contacts));
     }
 
     public void writeAddressBook() {
