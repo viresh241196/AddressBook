@@ -1,6 +1,7 @@
 package addressbook;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,23 +24,13 @@ public class AddressBookDB {
         try (Connection connection = this.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                String bookName = resultSet.getString("bookName");
-                String firstName = resultSet.getString("firstName");
-                String lastName = resultSet.getString("lastName");
-                String address = resultSet.getString("address");
-                String city = resultSet.getString("city");
-                String state = resultSet.getString("state");
-                String zip = resultSet.getString("zip");
-                String phoneNumber = resultSet.getString("phone_number");
-                String email = resultSet.getString("email");
-                contactList.add(new AddressBook(bookName, firstName, lastName, address, city, zip, state, phoneNumber, email));
-            }
+            contactList = this.fetchData(resultSet);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return contactList;
     }
+
     public int updateEntry(String name, String state) {
         String sql = String.format("update address_book set state = '%s' where name = '%s';",
                 state, name);
@@ -50,5 +41,40 @@ public class AddressBookDB {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public List<AddressBook> contactForRange(LocalDate start, LocalDate end) {
+        List<AddressBook> contactList = new ArrayList<>();
+        String sql = String.format("select * from address_book where dateAdded between '%s' and '%s';", start, end);
+        try (Connection connection = this.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            contactList = this.fetchData(resultSet);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return contactList;
+    }
+
+    private List<AddressBook> fetchData(ResultSet resultSet) {
+        List<AddressBook> contactsList = new ArrayList<>();
+        try {
+            while (resultSet.next()) {
+                String bookName = resultSet.getString("bookName");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                String address = resultSet.getString("address");
+                String city = resultSet.getString("city");
+                String state = resultSet.getString("state");
+                String zip = resultSet.getString("zip");
+                String phoneNumber = resultSet.getString("phone_number");
+                String email = resultSet.getString("email");
+                contactsList.add(new AddressBook(bookName, firstName, lastName, address, city, zip, state, phoneNumber,
+                        email));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return contactsList;
     }
 }

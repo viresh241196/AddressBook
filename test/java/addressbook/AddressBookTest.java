@@ -7,6 +7,7 @@ import java.net.CookieHandler;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class AddressBookTest {
@@ -24,5 +25,12 @@ public class AddressBookTest {
         Assertions.assertEquals(1, result);
     }
 
-    
+    @Test
+    public void givenDateRange_WhenRetrieved_ShouldMatchCount() {
+        AddressBookDB addressBookDB = new AddressBookDB();
+        LocalDate startDate = LocalDate.of(2018, 01, 01);
+        LocalDate endDate = LocalDate.now();
+        List<AddressBook> contactList = addressBookDB.contactForRange(startDate,endDate);
+        Assert.assertEquals(2,contactList.size());
+    }
 }
