@@ -3,7 +3,6 @@ package addressbook;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-
 import java.net.CookieHandler;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,4 +17,12 @@ public class AddressBookTest {
         List<AddressBook> addressBookList = addressBookDB.readData();
         Assertions.assertEquals(2, addressBookList.size());
     }
+    @Test
+    public void givenNewState_whenUpdated_shouldSyncWithDB() throws SQLException {
+        AddressBookDB addressBookDB = new AddressBookDB();
+        int result =addressBookDB.updateEntry("viresh","Goa");
+        Assertions.assertEquals(1, result);
+    }
+
+    
 }

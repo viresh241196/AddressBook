@@ -40,4 +40,15 @@ public class AddressBookDB {
         }
         return contactList;
     }
+    public int updateEntry(String name, String state) {
+        String sql = String.format("update address_book set state = '%s' where name = '%s';",
+                state, name);
+        try (Connection connection = this.getConnection()) {
+            Statement statement = connection.createStatement();
+            return 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
