@@ -14,11 +14,11 @@ public class AddressBook {
     @CsvBindByName(column = "city")
     public String city;
     @CsvBindByName(column = "zip")
-    public int zip;
+    public String zip;
     @CsvBindByName(column = "state")
     public String state;
     @CsvBindByName(column = "phone")
-    public long phoneNumber;
+    public String phoneNumber;
     @CsvBindByName(column = "email")
     public String email;
 
@@ -63,11 +63,11 @@ public class AddressBook {
         this.city = city;
     }
 
-    public int getZip() {
+    public String getZip() {
         return zip;
     }
 
-    public void setZip(int zip) {
+    public void setZip(String zip) {
         this.zip = zip;
     }
 
@@ -79,11 +79,11 @@ public class AddressBook {
         this.state = state;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -95,8 +95,8 @@ public class AddressBook {
         this.email = email;
     }
 
-    public AddressBook(String bookName, String firstName, String lastName, String address, String city, int zip,
-                       String state, long phoneNumber, String email) {
+    public AddressBook(String bookName, String firstName, String lastName, String address, String city, String zip,
+                       String state, String phoneNumber, String email) {
         this.bookName = bookName;
         this.firstName = firstName;
         this.lastName = lastName;

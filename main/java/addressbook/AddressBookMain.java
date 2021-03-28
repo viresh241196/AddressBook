@@ -14,7 +14,7 @@ public class AddressBookMain implements MultipleAddressBook {
     public Map<String, ArrayList<AddressBook>> multibook;
     public Map<String, ArrayList<AddressBook>> city;
     public Map<String, ArrayList<AddressBook>> state;
-    public Map<Integer, ArrayList<AddressBook>> zip;
+    public Map<String, ArrayList<AddressBook>> zip;
     public ArrayList<AddressBook> entries;
     public int count = 0;
     Scanner obj = new Scanner(System.in);
@@ -30,8 +30,8 @@ public class AddressBookMain implements MultipleAddressBook {
     }
 
     @Override
-    public void addAddressBook(String bookName, String firstName, String lastName, String address, String city, int zip,
-                               String state, long phoneNumber, String email) {
+    public void addAddressBook(String bookName, String firstName, String lastName, String address, String city, String zip,
+                               String state, String phoneNumber, String email) {
         AddressBook adder = new AddressBook(bookName, firstName, lastName, address, city, zip, state, phoneNumber, email);
         entries.add(adder);
         book.put(firstName, adder);
@@ -55,14 +55,14 @@ public class AddressBookMain implements MultipleAddressBook {
         System.out.println("Enter you Address name");
         String address = obj.nextLine();
         System.out.println("Enter you zip ");
-        int zip = obj.nextInt();
+        String zip = obj.next();
         System.out.println("Enter you city name");
         String city = obj.next();
         System.out.println("Enter you state name");
         String state = obj.next();
         obj.nextLine();
         System.out.println("Enter you phone number");
-        long phoneNumber = obj.nextLong();
+        String phoneNumber = obj.next();
         obj.nextLine();
         System.out.println("Enter you email name");
         String email = obj.nextLine();
@@ -121,7 +121,7 @@ public class AddressBookMain implements MultipleAddressBook {
                             break;
                         case 5:
                             System.out.println("Enter you Zip name");
-                            int zipname = obj.nextInt();
+                            String zipname = obj.next();
                             details.zip = zipname;
                             System.out.println(book);
                             break;
@@ -133,7 +133,7 @@ public class AddressBookMain implements MultipleAddressBook {
                             break;
                         case 7:
                             System.out.println("Enter you Phone number");
-                            long phonenumber = obj.nextLong();
+                            String phonenumber = obj.next();
                             obj.nextLine();
                             details.phoneNumber = phonenumber;
                             System.out.println(book);

@@ -2,8 +2,8 @@ package addressbook;
 
 interface MultipleAddressBook {
 
-    public void addAddressBook(String bookName, String firstName, String lastName, String address, String city, int zip,
-                               String state, long phoneNumber, String email);
+    public void addAddressBook(String bookName, String firstName, String lastName, String address, String city, String zip,
+                               String state, String phoneNumber, String email);
 
     public void getContact();
 
