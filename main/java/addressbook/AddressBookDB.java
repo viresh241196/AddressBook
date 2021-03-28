@@ -77,4 +77,30 @@ public class AddressBookDB {
         }
         return contactsList;
     }
+
+    public List<AddressBook> getContactsByCity(String city) {
+        List<AddressBook> contactList = new ArrayList<>();
+        String sql = String.format("select * from address_book where city = '%s';", city);
+        try (Connection connection = this.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            contactList = this.fetchData(resultSet);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return contactList;
+    }
+
+    public List<AddressBook> getContactsByState(String state) {
+        List<AddressBook> contactList = new ArrayList<>();
+        String sql = String.format("select * from address_book where state = '%s';", state);
+        try (Connection connection = this.getConnection()) {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            contactList = this.fetchData(resultSet);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return contactList;
+    }
 }
