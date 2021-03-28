@@ -103,4 +103,18 @@ public class AddressBookDB {
         }
         return contactList;
     }
+
+    public List<AddressBook> addContact(String bookName, String firstName, String lastName, String address, String city, String zip,
+                                        String state, String phoneNumber, String email) {
+        String sql = String.format("INSERT INTO address_book (bookName,firstName,lastName,address,city,state,zip,phone_number,email,dateAdded)" +
+                        "values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')", bookName, firstName,
+                lastName, address, city, zip, state, phoneNumber, email, LocalDate.now());
+        try (Connection connection = this.getConnection()) {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(sql);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return readData();
+    }
 }

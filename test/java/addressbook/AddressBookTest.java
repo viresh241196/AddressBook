@@ -49,4 +49,13 @@ public class AddressBookTest {
         List<AddressBook> contactList = addressBookDB.getContactsByState("maharashtra");
         Assert.assertEquals(1, contactList.size());
     }
+
+    @Test
+    public void givenInfo_ShouldBeAbleToAddDataInDB(){
+        AddressBookDB addressBookDB = new AddressBookDB();
+        List<AddressBook> contactList = addressBookDB.addContact("abc","sidhu","rawool","parel",
+                "pune","400012","goa","1234567","asdfg@234");
+        Assert.assertEquals(3, contactList.size());
+    }
+
 }
