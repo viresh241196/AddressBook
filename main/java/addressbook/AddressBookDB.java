@@ -45,6 +45,7 @@ public class AddressBookDB {
                 state, name);
         try (Connection connection = this.getConnection()) {
             Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
             return 1;
         } catch (SQLException e) {
             e.printStackTrace();
