@@ -8,7 +8,10 @@ import java.net.CookieHandler;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 public class AddressBookTest {
@@ -51,11 +54,41 @@ public class AddressBookTest {
     }
 
     @Test
-    public void givenInfo_ShouldBeAbleToAddDataInDB(){
+    public void givenInfo_ShouldBeAbleToAddDataInDB() {
         AddressBookDB addressBookDB = new AddressBookDB();
-        List<AddressBook> contactList = addressBookDB.addContact("abc","sidhu","rawool","parel",
-                "pune","400012","goa","1234567","asdfg@234");
+        List<AddressBook> contactList = addressBookDB.addContact("abc", "sidhu", "rawool", "parel",
+                "pune", "400012", "goa", "1234567", "asdfg@234");
         Assert.assertEquals(3, contactList.size());
     }
 
+    @Test
+    public void given6Employees_whenAddedShouldBeAddedToTheDB() throws SQLException {
+        AddressBookDB addressBookDB = new AddressBookDB();
+        AddressBook[] arrayOfEmps = {
+                new AddressBook("abc", "pooja", "rawool", "parel",
+                        "pune", "400012", "goa", "1234567", "asdfg@234"),
+                new AddressBook("abc", "sidhu", "rawool", "parel",
+                        "pune", "400012", "goa", "1234567", "asdfg@234")
+        };
+        Instant start = Instant.now();
+        addressBookDB.addContactWithThreads(Arrays.asList(arrayOfEmps));
+        Instant end = Instant.now();
+        System.out.println("Duration without Thread : " + Duration.between(start, end));
+    }
 }
+//        EmployeePayrollData[] arrayOfEmps = {
+//                new EmployeePayrollData(0, "chandler bing", "M", 70000, LocalDate.now())
+//        };
+//        EmployeePayrollService employeePayrollService = new EmployeePayrollService();
+//        employeePayrollService.readEmployeePayRollDBData(DB_IO);
+//        Instant start = Instant.now();
+//        employeePayrollService.addEmployeesToPayroll(Arrays.asList(arrayOfEmps));
+//        Instant end = Instant.now();
+//        System.out.println("Duration without Thread : " + Duration.between(start, end));
+//        Instant threadStart = Instant.now();
+//        employeePayrollService.addEmployeeToPayrollWithThread(Arrays.asList(arrayOfEmps));
+//        Instant threadEnd = Instant.now();
+//        System.out.println("Duration without Thread : " + Duration.between(threadStart, threadEnd));
+//        Assertions.assertEquals(24, employeePayrollService.countEntries(DB_IO));
+
+

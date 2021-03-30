@@ -3,7 +3,9 @@ package addressbook;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookDB {
 
@@ -11,11 +13,15 @@ public class AddressBookDB {
         String jdbcURl = "jdbc:mysql://localhost:3306/address_book?useSSl=false";
         String userName = "root";
         String password = "root";
-        Connection connection;
         System.out.println("Connecting to database:" + jdbcURl);
-        connection = DriverManager.getConnection(jdbcURl, userName, password);
-        System.out.println("connection is successful!!!!!!!" + connection);
-        return connection;
+        try {
+            Connection connection = DriverManager.getConnection(jdbcURl, userName, password);
+            System.out.println("connection is successful!!!!!!!" + connection);
+            return connection;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<AddressBook> readData() {
@@ -108,13 +114,37 @@ public class AddressBookDB {
                                         String state, String phoneNumber, String email) {
         String sql = String.format("INSERT INTO address_book (bookName,firstName,lastName,address,city,state,zip,phone_number,email,dateAdded)" +
                         "values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')", bookName, firstName,
-                lastName, address, city, zip, state, phoneNumber, email, LocalDate.now());
+                lastName, address, city, zip, state, phoneNumber, email, LocalDate.MIN);
         try (Connection connection = this.getConnection()) {
-            Statement statement = connection.createStatement();
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.executeUpdate(sql);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return readData();
+    }
+
+    public void addContactWithThreads(List<AddressBook> contactListData) {
+        Map<Integer, Boolean> contactStatus = new HashMap<>();
+        for (AddressBook entry : contactListData) {
+            Runnable runnable = () -> {
+                contactStatus.put(entry.hashCode(), false);
+                System.out.println("Employee Being Added : " + Thread.currentThread().getName());
+                List<AddressBook> list = new AddressBookDB().addContact(entry.getBookName(), entry.getFirstName(), entry.getLastName(),
+                        entry.getAddress(), entry.getCity(), entry.getState(), entry.getZip(), entry.getPhoneNumber(),
+                        entry.getEmail());
+                contactStatus.put(entry.hashCode(), true);
+                System.out.println("Employee Added : " + Thread.currentThread().getName());
+            };
+            Thread thread = new Thread(runnable, entry.getFirstName());
+            thread.start();
+        }
+        while (contactStatus.containsValue(false)) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

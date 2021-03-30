@@ -2,6 +2,8 @@ package addressbook;
 
 import com.opencsv.bean.CsvBindByName;
 
+import java.util.Objects;
+
 public class AddressBook {
     @CsvBindByName(column = "bookName", required = true)
     public String bookName;
@@ -112,5 +114,10 @@ public class AddressBook {
     public String toString() {
         return "BookName: " + bookName + " firstName:" + firstName + " lastName:" + lastName + " address:" + address + " city:" + city
                 + " zip:" + zip + " state:" + state + " phoneNumber:" + phoneNumber + " email:" + email + "\n";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bookName, firstName, lastName, address, city, zip, state, phoneNumber, email);
     }
 }
