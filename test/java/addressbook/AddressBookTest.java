@@ -62,7 +62,7 @@ public class AddressBookTest {
     }
 
     @Test
-    public void given6Employees_whenAddedShouldBeAddedToTheDB() throws SQLException {
+    public void givenMultipleContact_whenAddedShouldBeAddedToTheDB() throws SQLException {
         AddressBookDB addressBookDB = new AddressBookDB();
         AddressBook[] arrayOfEmps = {
                 new AddressBook("abc", "pooja", "rawool", "parel",
@@ -76,19 +76,6 @@ public class AddressBookTest {
         System.out.println("Duration without Thread : " + Duration.between(start, end));
     }
 }
-//        EmployeePayrollData[] arrayOfEmps = {
-//                new EmployeePayrollData(0, "chandler bing", "M", 70000, LocalDate.now())
-//        };
-//        EmployeePayrollService employeePayrollService = new EmployeePayrollService();
-//        employeePayrollService.readEmployeePayRollDBData(DB_IO);
-//        Instant start = Instant.now();
-//        employeePayrollService.addEmployeesToPayroll(Arrays.asList(arrayOfEmps));
-//        Instant end = Instant.now();
-//        System.out.println("Duration without Thread : " + Duration.between(start, end));
-//        Instant threadStart = Instant.now();
-//        employeePayrollService.addEmployeeToPayrollWithThread(Arrays.asList(arrayOfEmps));
-//        Instant threadEnd = Instant.now();
-//        System.out.println("Duration without Thread : " + Duration.between(threadStart, threadEnd));
-//        Assertions.assertEquals(24, employeePayrollService.countEntries(DB_IO));
+
 
 
