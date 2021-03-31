@@ -100,6 +100,30 @@ public class AddressBookTest {
         List<AddressBook> contactsList = new Gson().fromJson(response.asString(),new TypeToken<List<AddressBook>>(){}.getType());
         return contactsList;
     }
+
+    @Test
+    public void givenMultipleContact_ShouldMatchResponseAndCount() {
+        AddressBook[] contactsArray = {
+                new AddressBook("abc", "rahul", "rawool", "parel",
+                        "pune", "400012", "goa", "1234567", "asdfg@234"),
+                new AddressBook("abc", "ram", "rawool", "parel",
+                        "pune", "400012", "goa", "1234567", "asdfg@234"),
+        };
+        for (AddressBook contacts : contactsArray){
+            Response response = addContactToJsonServer(contacts);
+            Assert.assertEquals(201,response.getStatusCode());
+        }
+        List<AddressBook> contactsList = getContactList();
+        Assert.assertEquals(6,contactsList.size());
+    }
+
+    private Response addContactToJsonServer(AddressBook contacts) {
+        String contactJson = new Gson().toJson(contacts);
+        RequestSpecification requestSpecification = RestAssured.given();
+        requestSpecification.header("Content-Type", "application/json");
+        requestSpecification.body(contactJson);
+        return requestSpecification.post("/addressbook");
+    }
 }
 
 
