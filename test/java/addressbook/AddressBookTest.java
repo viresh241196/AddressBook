@@ -92,12 +92,13 @@ public class AddressBookTest {
     @Test
     public void givenEntryInJson_Whenretrived_ShouldMatchCount() {
         List<AddressBook> contactsList = getContactList();
-        Assert.assertEquals(2,contactsList.size());
+        Assert.assertEquals(2, contactsList.size());
     }
 
     private List<AddressBook> getContactList() {
         Response response = RestAssured.get("/addressbook");
-        List<AddressBook> contactsList = new Gson().fromJson(response.asString(),new TypeToken<List<AddressBook>>(){}.getType());
+        List<AddressBook> contactsList = new Gson().fromJson(response.asString(), new TypeToken<List<AddressBook>>() {
+        }.getType());
         return contactsList;
     }
 
@@ -109,12 +110,12 @@ public class AddressBookTest {
                 new AddressBook("abc", "ram", "rawool", "parel",
                         "pune", "400012", "goa", "1234567", "asdfg@234"),
         };
-        for (AddressBook contacts : contactsArray){
+        for (AddressBook contacts : contactsArray) {
             Response response = addContactToJsonServer(contacts);
-            Assert.assertEquals(201,response.getStatusCode());
+            Assert.assertEquals(201, response.getStatusCode());
         }
         List<AddressBook> contactsList = getContactList();
-        Assert.assertEquals(6,contactsList.size());
+        Assert.assertEquals(6, contactsList.size());
     }
 
     private Response addContactToJsonServer(AddressBook contacts) {
@@ -129,19 +130,18 @@ public class AddressBookTest {
     public void givenDetailToUpdate_WhenUpdated_ShouldMatchResponse() {
         int id = 2;
         List<AddressBook> contactsList = getContactList();
-        updateZipToJson("sidhu","4000",contactsList);
-        AddressBook contacts = getContact("sidhu",contactsList);
-
+        updateZipToJson("sidhu", "4000", contactsList);
+        AddressBook contacts = getContact("sidhu", contactsList);
         String contactJson = new Gson().toJson(contacts);
         RequestSpecification requestSpecification = RestAssured.given();
-        requestSpecification.header("Content-Type","application/json");
+        requestSpecification.header("Content-Type", "application/json");
         requestSpecification.body(contactJson);
-        Response response = requestSpecification.put("/addressbook/"+id);
-        Assert.assertEquals(200,response.getStatusCode());
+        Response response = requestSpecification.put("/addressbook/" + id);
+        Assert.assertEquals(200, response.getStatusCode());
     }
 
     public void updateZipToJson(String firstName, String zip, List<AddressBook> contactsList) {
-        AddressBook contacts = getContact(firstName,contactsList);
+        AddressBook contacts = getContact(firstName, contactsList);
         if (contacts != null) contacts.setZip(zip);
     }
 
@@ -151,7 +151,20 @@ public class AddressBookTest {
                 .findFirst()
                 .orElse(null);
     }
-    
+
+    @Test
+    public void givenContactFirstName_WhenDeleted_ShouldMatchResponseAndCount() {
+        List<AddressBook> contactsList = getContactList();
+        AddressBook contacts = getContact("ram", contactsList);
+        String contactJson = new Gson().toJson(contacts);
+        RequestSpecification requestSpecification = RestAssured.given();
+        requestSpecification.header("Content-Type", "application/json");
+        requestSpecification.body(contactJson);
+        int id = 4;
+        Response response = requestSpecification.delete("/addressbook/" + id);
+        Assert.assertEquals(200, response.getStatusCode());
+        Assert.assertEquals(5, getContactList().size());
+    }
 }
 
 
