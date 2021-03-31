@@ -1,8 +1,15 @@
 package addressbook;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.net.CookieHandler;
 import java.sql.Connection;
@@ -75,20 +82,26 @@ public class AddressBookTest {
         Instant end = Instant.now();
         System.out.println("Duration without Thread : " + Duration.between(start, end));
     }
+
+    @Before
+    public void setUp() {
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = 3000;
+    }
+
+    @Test
+    public void givenEntryInJson_Whenretrived_ShouldMatchCount() {
+        List<AddressBook> contactsList = getContactList();
+        Assert.assertEquals(2,contactsList.size());
+    }
+
+    private List<AddressBook> getContactList() {
+        Response response = RestAssured.get("/addressbook");
+        List<AddressBook> contactsList = new Gson().fromJson(response.asString(),new TypeToken<List<AddressBook>>(){}.getType());
+        return contactsList;
+    }
 }
-//        EmployeePayrollData[] arrayOfEmps = {
-//                new EmployeePayrollData(0, "chandler bing", "M", 70000, LocalDate.now())
-//        };
-//        EmployeePayrollService employeePayrollService = new EmployeePayrollService();
-//        employeePayrollService.readEmployeePayRollDBData(DB_IO);
-//        Instant start = Instant.now();
-//        employeePayrollService.addEmployeesToPayroll(Arrays.asList(arrayOfEmps));
-//        Instant end = Instant.now();
-//        System.out.println("Duration without Thread : " + Duration.between(start, end));
-//        Instant threadStart = Instant.now();
-//        employeePayrollService.addEmployeeToPayrollWithThread(Arrays.asList(arrayOfEmps));
-//        Instant threadEnd = Instant.now();
-//        System.out.println("Duration without Thread : " + Duration.between(threadStart, threadEnd));
-//        Assertions.assertEquals(24, employeePayrollService.countEntries(DB_IO));
+
+
 
 
