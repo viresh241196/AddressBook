@@ -164,6 +164,7 @@ public class AddressBookTest {
         Response response = requestSpecification.delete("/addressbook/" + id);
         Assert.assertEquals(200, response.getStatusCode());
         Assert.assertEquals(5, getContactList().size());
+        
     }
 }
 
