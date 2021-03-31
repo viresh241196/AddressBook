@@ -124,6 +124,34 @@ public class AddressBookTest {
         requestSpecification.body(contactJson);
         return requestSpecification.post("/addressbook");
     }
+
+    @Test
+    public void givenDetailToUpdate_WhenUpdated_ShouldMatchResponse() {
+        int id = 2;
+        List<AddressBook> contactsList = getContactList();
+        updateZipToJson("sidhu","4000",contactsList);
+        AddressBook contacts = getContact("sidhu",contactsList);
+
+        String contactJson = new Gson().toJson(contacts);
+        RequestSpecification requestSpecification = RestAssured.given();
+        requestSpecification.header("Content-Type","application/json");
+        requestSpecification.body(contactJson);
+        Response response = requestSpecification.put("/addressbook/"+id);
+        Assert.assertEquals(200,response.getStatusCode());
+    }
+
+    public void updateZipToJson(String firstName, String zip, List<AddressBook> contactsList) {
+        AddressBook contacts = getContact(firstName,contactsList);
+        if (contacts != null) contacts.setZip(zip);
+    }
+
+    private AddressBook getContact(String firstName, List<AddressBook> contactsList) {
+        return contactsList.stream()
+                .filter(contactDetails -> contactDetails.firstName.equals(firstName))
+                .findFirst()
+                .orElse(null);
+    }
+    
 }
 
 
